@@ -1,26 +1,54 @@
-# Contributing to the Gramps Web Frontend
+# Contributing to This Fork
 
-Welcome, and thank you for your interest in contributing to the Gramps Web frontend! Your efforts help make this project better for everyone.
+Thank you for your interest in improving this fork of the Gramps Web frontend.
 
-## How to Contribute
+## Project Focus
 
-### Reporting Issues
-- Found a bug or have a feature request? [Open an issue](https://github.com/gramps-project/gramps-web/issues) to let us know!
-- Provide as much detail as possible, including steps to reproduce the issue or a clear description of the feature idea.
+This fork is intentionally focused on a small set of goals:
 
-### Proposing Features
-- **Before implementing a new feature**, please open an issue to discuss your proposal. This helps avoid duplicate work and ensures alignment with project goals.
+- religion-neutral genealogical symbols;
+- lightweight frontend customization;
+- minimal divergence from upstream;
+- respectful presentation for multi-faith family histories.
 
-### Development Guidelines
-- Follow the [developer documentation](https://www.grampsweb.org/development/dev/) for setup, coding standards, and API details.
-- Ensure your changes include appropriate tests and documentation updates where applicable.
+Please keep that scope in mind when proposing changes.
 
-### Code of Conduct
-- Please read and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md) to ensure a welcoming and inclusive environment for all contributors.
+## What Fits This Fork Well
 
+Good contribution areas include:
 
-### Communication
-- For general discussions or questions, join our [Discourse forum](https://gramps.discourse.group/).
-- Engage respectfully and collaboratively with the community.
+- improvements to neutral symbol display;
+- consistency fixes across views and charts;
+- small UX improvements that support the fork's purpose;
+- documentation updates;
+- English-first documentation, with future support for Russian and Bashkir.
 
-We look forward to your contributions!
+## Before Opening a Large Change
+
+If the change is more than a small fix, please open an issue first so the proposal can be discussed before implementation.
+
+## Upstream vs Fork-Specific Changes
+
+This repository is a fork, not the main Gramps Web frontend project.
+
+- If your change is specifically about this fork's neutral presentation goals, open it here.
+- If your change is a general Gramps Web frontend feature or bug unrelated to this fork's focus, the upstream project may be the better place for it:
+  [gramps-project/gramps-web](https://github.com/gramps-project/gramps-web)
+
+## Development
+
+For local testing in this fork, use the repository's Docker-based setup:
+
+```powershell
+docker compose up --build -d
+```
+
+This repository also includes a local multi-stage `Dockerfile` for building the frontend from source.
+
+## Code of Conduct
+
+Please read and follow [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md).
+
+## Credits
+
+This fork builds on the work of the upstream Gramps Web maintainers and contributors, whose work is gratefully acknowledged.

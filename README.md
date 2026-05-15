@@ -1,74 +1,88 @@
-# Gramps Web &ndash; Frontend
+# Gramps Web Neutral Symbols Fork
 
-Welcome to **Gramps Web**, a modern, feature-packed, free & open source web app for browsing and collaboratively editing genealogical databases. Fully interoperable with the [Gramps](https://gramps-project.org) desktop application, Gramps Web brings your family history to the web, making it accessible from anywhere and easy to share.
+This repository is a focused fork of the [Gramps Web frontend](https://github.com/gramps-project/gramps-web).
 
+It exists for users who want a more religion-neutral visual style in genealogical data display, especially for birth and death markers. In many family trees, people of different faiths may appear in the same family line: Muslims, Christians, Jews, Buddhists, secular relatives, and others. This fork uses neutral symbols so the interface can feel welcoming to all of them without changing the underlying data model.
 
-## What is Gramps Web?
+## Purpose of This Fork
 
-**Gramps Web** is a web based application, ideally suited for collaborating with others to build your family tree together. It can be accessed from any mobile or portable web-enabled device. Gramps Web is free & open source software, with the privacy and control of your data a top priority.
+The main goal of this fork is simple:
 
-Gramps Web is designed to be a companion to [Gramps Desktop](https://gramps-project.org), the leading open source genealogy desktop application.
+- keep Gramps Web familiar and lightweight;
+- replace faith-associated birth/death symbols with neutral alternatives;
+- avoid intrusive or heavy feature divergence from upstream;
+- preserve compatibility with normal Gramps Web workflows.
 
-Key highlights of Gramps Web include:
+This is not a criticism of the upstream project. It is an alternative presentation choice for users who prefer a neutral interface for multi-faith or interfaith family histories.
 
-- 🌐 **Access Anywhere:** Browse and edit your family tree on any web-enabled device.
-- 🤝 **Collaborative Features:** Share and collaborate with family members in real-time.
-- 🔒 **Privacy First:** Advanced privacy controls ensure your data stays secure.
-- 🗺️ **Interactive Visualizations:** Family tree charts, dynamic maps, and more.
-- 🧩 **Bi-Directional Sync:** Seamlessly sync data between Gramps Web and Gramps Desktop.
+## Current Symbol Policy
 
-[Learn More at grampsweb.org ➡️](https://www.grampsweb.org/)
+This fork currently uses:
 
+- birth: `/`
+- death: `\`
 
-## Features at a Glance
+The change is intentionally small, frontend-only, and easy to maintain.
 
-- **Interactive Family Tree Charts:** Explore ancestor, descendant, fan, and hourglass charts with ease.
-- **Powerful Mapping Tools:** Visualize places on interactive maps, including custom overlays for historical maps.
-- **Integrated Blog:** Document your research in story format with images, all stored in the Gramps database.
-- **Advanced Search:** Search all record types with support for wildcards and logical operators.
-- **DNA & Chromosome Tools:** View DNA matches and analyze chromosome data.
-- **AI Chat Assistant:** Chat with your family tree, in your native language, powered by AI.
-- **Full Customization & Internationalization:** Switch between 40+ languages and export your data any time.
+More details are documented in [CHANGES_SYMBOLS.md](./CHANGES_SYMBOLS.md).
 
+## Scope
 
-## Screenshot
+This fork is intentionally narrow in scope. It is not trying to redesign Gramps Web or replace upstream direction.
 
-![Screenshot of Gramps Web interface](screenshot.png)
+Current focus:
 
+- neutral genealogical symbols;
+- minimal frontend-only customization;
+- practical maintainability;
+- respectful presentation for diverse families.
 
-## Try It Out
+## Relationship to Upstream
 
-### [Live Demo](https://demo.grampsweb.org/)
-Experience Gramps Web with our demo deployment.
+This repository remains based on the Gramps Web frontend and fully acknowledges the work of the upstream project and its contributors.
 
-Login credentials: `owner`, `editor`, `contributor`, or `member` (same as password).
+- Upstream frontend: [gramps-project/gramps-web](https://github.com/gramps-project/gramps-web)
+- Upstream backend: [gramps-project/gramps-web-api](https://github.com/gramps-project/gramps-web-api)
+- Gramps project: [gramps-project.org](https://gramps-project.org)
 
-**Note:** some features (like AI chat) are not available in the demo deployment.
+This fork is maintained as a fork-specific customization. It is not currently intended for merge into upstream.
 
+## Running This Fork Locally
 
-## Documentation
+This fork includes a local Docker build setup so the modified frontend can be tested directly from this repository.
 
-The documentation of Gramps Web is hosted at [www.grampsweb.org](https://www.grampsweb.org/):
+From the repository root:
 
-- **[Features](https://www.grampsweb.org/features/):** Explore the key capabilities of Gramps Web.
-- **[Install/Setup](https://www.grampsweb.org/install_setup/setup/):** Step-by-step guide to setting up Gramps Web.
-- **[Administration](https://www.grampsweb.org/administration/admin/):** Learn how to manage and maintain your Gramps Web instance.
-- **[User Guide](https://www.grampsweb.org/user-guide/):** Detailed instructions for everyday users.
-- **[Developers](https://www.grampsweb.org/development/dev/):** Dive into the codebase and technical details.
-- **[Contribute](https://www.grampsweb.org/contribute/contribute/):** Find out how you can support the project.
-- **[Get Help](https://www.grampsweb.org/help/help/):** Access support resources and FAQs.
+```powershell
+docker compose down
+docker compose up --build -d
+```
 
+This builds the frontend from local source code and runs it with the Gramps Web API image.
 
-## Contribute
+## Development Notes
 
-We'd love your feedback and contributions! Star this repository, fork it, and join us in making family history more accessible to everyone. Check out the [contribution guidelines](https://github.com/gramps-project/gramps-web/blob/main/CONTRIBUTING.md) to get started.
+The repository includes:
 
+- a local `docker-compose.yml` for building and testing the fork;
+- a multi-stage `Dockerfile` that builds the frontend before packaging it;
+- a centralized symbol definition so future UI components can stay consistent.
 
-## Reporting issues
+## Language Policy
 
-Note that this Github repository contains the source code of the Gramps Web user interface (frontend). For issues with the server-side code, please see the [Gramps Web API](https://github.com/gramps-project/gramps-web-api) (backend) repository. See [Get Help](https://www.grampsweb.org/help/help/) for more details.
+The primary documentation language of this fork is English.
 
-## Roadmap
+Planned additional languages for documentation and project notes:
 
-Gramps Web does not follow a fixed-date roadmap. However, you can explore prioritized feature requests and ongoing development efforts via our [development board](https://github.com/orgs/gramps-project/projects/1/views/1). This board provides an up-to-date view of what the developers are working on and what's coming next. Note that the roadmap reflects the current priorities of existing developers, not a restriction on what can be contributed.
+- Russian
+- Bashkir
 
+## Contributing
+
+Contributions are welcome when they align with the purpose of this fork.
+
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening issues or submitting changes.
+
+## Credits
+
+This fork would not exist without the upstream Gramps Web project and the broader Gramps community. Full credit for the original application design and functionality belongs to its maintainers and contributors.

@@ -1,42 +1,45 @@
-# CHANGES_SYMBOLS
+# Symbol Changes in This Fork
 
-Этот файл описывает изменение символов рождения и смерти в форке `Irnazar/gramps-web`.
+This document explains the birth and death symbol changes used in `Irnazar/gramps-web`.
 
-## Что изменено
+## Summary
 
-Вместо традиционных генеалогических символов используются более нейтральные и универсальные обозначения:
+This fork replaces traditional genealogical birth and death symbols with more neutral alternatives:
 
-- рождение: `/`
-- смерть: `\`
+- birth: `/`
+- death: `\`
 
-## Статус изменения
+## Why This Fork Uses Neutral Symbols
 
-Это изменение сделано специально для форка `Irnazar/gramps-web`.
+Family trees often include people from different religious and cultural backgrounds, sometimes within the same immediate family.
 
-- оно не планируется для слияния с основным проектом `gramps-web`;
-- решение принято как локальная настройка интерфейса для форка;
-- обсуждение идеи проводилось на форуме, но широкого интереса к изменению в основном проекте не возникло.
+This fork uses neutral symbols because they are:
 
-## Зачем
+- less tied to a specific religious tradition;
+- easier to present in mixed-faith family histories;
+- simple and lightweight to maintain;
+- consistent across cards, lists, and charts.
 
-Исходные обозначения в проекте использовали символы вроде звездочки и креста. Для нашего форка они заменены на более простые символы, которые:
+## Fork Status
 
-- визуально нейтральнее;
-- проще воспринимаются в разных языковых и культурных контекстах;
-- одинаково работают в текстовых строках, карточках и графиках.
+This is a fork-specific change.
 
-## Где изменено
+- It is maintained for `Irnazar/gramps-web`.
+- It is not currently intended for merge into upstream `gramps-web`.
+- The idea was discussed publicly, but there was not enough broad interest to pursue it as an upstream change.
 
-Изменения внесены в следующие части интерфейса:
+## Where the Change Applies
 
-- карточки персон;
-- семейные блоки;
-- списки людей;
-- древовидные графики;
-- relationship chart;
-- вспомогательные текстовые представления.
+The updated symbols are used in:
 
-## Основные файлы
+- person cards;
+- family views;
+- person lists;
+- tree charts;
+- relationship charts;
+- helper text renderers.
+
+## Main Files
 
 - `src/icons.js`
 - `src/util.js`
@@ -45,11 +48,11 @@
 - `src/charts/TreeChart.js`
 - `src/charts/RelationshipChart.js`
 
-## Текущее правило для форка
+## Implementation Rule
 
-Во всем интерфейсе форка следует придерживаться такого отображения:
+The fork should consistently use:
 
 - `birthSymbol = '/'`
 - `deathSymbol = '\\'`
 
-Если в будущем появятся новые компоненты с отображением дат рождения и смерти, им нужно использовать эти общие символы, а не вшивать знаки напрямую в шаблон.
+If future UI components display birth or death dates, they should reuse the shared symbol definitions rather than hardcoding other signs directly in templates.
