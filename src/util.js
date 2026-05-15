@@ -50,7 +50,14 @@ import {
   mdiBarn,
   mdiBookOpenVariant,
 } from '@mdi/js'
-import {asteriskIcon, crossIcon, renderIconSvg, ringsIconPath} from './icons.js'
+import {
+  asteriskIcon,
+  birthSymbol,
+  crossIcon,
+  deathSymbol,
+  renderIconSvg,
+  ringsIconPath,
+} from './icons.js'
 import './components/GrampsjsIcon.js'
 import {frontendLanguages} from './strings.js'
 import {hex6ToCss, hex12ToCss} from './color.js'
@@ -517,7 +524,7 @@ export function objectDetail(type, obj, strings) {
   switch (type) {
     case 'person':
       return `
-    ${obj?.profile?.birth?.date ? `∗ ${obj.profile.birth.date}` : ''}${
+    ${obj?.profile?.birth?.date ? `${birthSymbol} ${obj.profile.birth.date}` : ''}${
         obj?.profile?.birth?.place && obj?.profile?.birth?.date ? ', ' : ''
       }${obj?.profile?.birth?.place_name || obj?.profile?.birth?.place || ''}
     `

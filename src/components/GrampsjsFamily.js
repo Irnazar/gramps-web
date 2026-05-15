@@ -1,4 +1,5 @@
 import {css, html} from 'lit'
+import {birthSymbol, deathSymbol} from '../icons.js'
 
 import '@material/mwc-icon'
 
@@ -159,11 +160,11 @@ export class GrampsjsFamily extends GrampsjsObject {
                     ${birthDate || deathDate
                       ? html`<span class="parent-dates">
                           ${birthDate
-                            ? html`<span class="sym">∗</span> ${birthDate}`
+                            ? html`<span class="sym">${birthSymbol}</span> ${birthDate}`
                             : ''}
                           ${birthDate && deathDate ? ' ' : ''}
                           ${deathDate
-                            ? html`<span class="sym">†</span> ${deathDate}`
+                            ? html`<span class="sym">${deathSymbol}</span> ${deathDate}`
                             : ''}
                         </span>`
                       : ''}`

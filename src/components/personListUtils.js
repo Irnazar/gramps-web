@@ -1,6 +1,7 @@
 import {html} from 'lit'
 import {mdiAccount} from '@mdi/js'
 
+import {birthSymbol, deathSymbol} from '../icons.js'
 import {objectIconPath} from '../util.js'
 import './GrampsjsImg.js'
 import './GrampsjsIcon.js'
@@ -48,9 +49,9 @@ export function renderPersonDates(profile, {showAge = true} = {}) {
       : ''
   if (!birthStr && !deathStr && !ageStr) return ''
   return html`<span slot="supporting-text"
-    ><span class="date-col">${birthStr ? `∗ ${birthStr}` : ''}</span
+    ><span class="date-col">${birthStr ? `${birthSymbol} ${birthStr}` : ''}</span
     ><span class="date-col"
-      >${deathStr ? `† ${deathStr}` : ''}${ageStr ? ` ${ageStr}` : ''}</span
+      >${deathStr ? `${deathSymbol} ${deathStr}` : ''}${ageStr ? ` ${ageStr}` : ''}</span
     ></span
   >`
 }

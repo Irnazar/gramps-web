@@ -2,6 +2,7 @@ import {create, select} from 'd3-selection'
 import {zoom} from 'd3-zoom'
 import {linkVertical} from 'd3-shape'
 import {Graphviz} from '@hpcc-js/wasm'
+import {birthSymbol, deathSymbol} from '../icons.js'
 import {chartNameDisplayFormat} from '../util.js'
 import {appendAddPersonButton} from './addPersonButton.js'
 
@@ -473,7 +474,7 @@ function remasterChart(
     .attr('paint-order', 'stroke')
     .attr('x', d => textPadding(d))
     .attr('y', 25 + 17 * 2)
-    .text(d => clipString(`*${d.profile.birth.date}`, boxWidthTotal(d)))
+    .text(d => clipString(`${birthSymbol}${d.profile.birth.date}`, boxWidthTotal(d)))
 
   nodes
     .filter(d => d.profile?.death?.date && d.nodetype === 'person')
@@ -484,7 +485,7 @@ function remasterChart(
     .attr('paint-order', 'stroke')
     .attr('x', d => textPadding(d))
     .attr('y', 25 + 17 * 3)
-    .text(d => clipString(`†${d.profile.death.date}`, boxWidthTotal(d)))
+    .text(d => clipString(`${deathSymbol}${d.profile.death.date}`, boxWidthTotal(d)))
 
   // images
   nodes
