@@ -1,94 +1,102 @@
 # Gramps Web Neutral Symbols Fork
 
-This repository is a focused fork of the [Gramps Web frontend](https://github.com/gramps-project/gramps-web).
+A focused fork of the Gramps Web frontend with religion-neutral genealogical symbols.
 
-It exists for users who want a more religion-neutral visual style in genealogical data display, especially for birth and death markers. In many family trees, people of different faiths may appear in the same family line: Muslims, Christians, Jews, Buddhists, secular relatives, and others. This fork uses neutral symbols so the interface can feel welcoming to all of them without changing the underlying data model.
+## Overview
 
-## Purpose of This Fork
+This project is a small but thoughtful modification of the Gramps Web frontend interface.
 
-The main goal of this fork is simple:
+Its purpose is to provide a more religion-neutral visual style for genealogical data display, especially for birth and death markers used in family trees.
 
-- keep Gramps Web familiar and lightweight;
-- replace faith-associated birth/death symbols with neutral alternatives;
-- avoid intrusive or heavy feature divergence from upstream;
-- preserve compatibility with normal Gramps Web workflows.
+Genealogy often connects people from many different backgrounds and beliefs within the same family line:
 
-This is not a criticism of the upstream project. It is an alternative presentation choice for users who prefer a neutral interface for multi-faith or interfaith family histories.
+* Muslims
+* Christians
+* Jews
+* Buddhists
+* secular relatives
+* mixed-faith families
+* and many others
 
-## Current Symbol Policy
+This fork replaces some traditional religious-style symbols with neutral alternatives while fully preserving the original genealogical data and structure.
 
-This fork currently uses:
+The goal is not to remove history or identity, but to create an interface that feels respectful and comfortable for everyone.
 
-- birth: `/`
-- death: `\`
+---
 
-The change is intentionally small, frontend-only, and easy to maintain.
+## Philosophy
 
-More details are documented in [CHANGES_SYMBOLS.md](./CHANGES_SYMBOLS.md).
+Software interfaces shape emotional perception.
 
-## Scope
+Small visual details, especially symbols associated with life, death, and family history, may feel deeply personal to users from different cultures and traditions.
 
-This fork is intentionally narrow in scope. It is not trying to redesign Gramps Web or replace upstream direction.
+This fork aims to offer:
 
-Current focus:
+* a calmer and more universal visual language
+* neutral genealogy symbols
+* compatibility with diverse cultural backgrounds
+* a welcoming interface for all families
 
-- neutral genealogical symbols;
-- minimal frontend-only customization;
-- practical maintainability;
-- respectful presentation for diverse families.
+---
 
-## Relationship to Upstream
+## Project goals
 
-This repository remains based on the Gramps Web frontend and fully acknowledges the work of the upstream project and its contributors.
+* Maintain compatibility with upstream Gramps Web
+* Preserve the original data model
+* Avoid altering user-entered historical information
+* Keep changes minimal and maintainable
+* Provide a clean and neutral visual experience
 
-- Upstream frontend: [gramps-project/gramps-web](https://github.com/gramps-project/gramps-web)
-- Upstream backend: [gramps-project/gramps-web-api](https://github.com/gramps-project/gramps-web-api)
-- Gramps project: [gramps-project.org](https://gramps-project.org)
+---
 
-This fork is maintained as a fork-specific customization. It is not currently intended for merge into upstream.
+## Non-goals
+
+This project does **not**:
+
+* remove religious data from records
+* alter family history
+* censor cultural identity
+* modify genealogy structures
+
+Only certain interface symbols are visually adjusted.
+
+---
 
 ## Screenshot
 
-The screenshot below shows the fork in use with neutral birth and death markers in a real person and family context.
-
 ![Screenshot of the Gramps Web Neutral Symbols Fork](screenshot_farit.png)
 
-## Running This Fork Locally
+---
 
-This fork includes a local Docker build setup so the modified frontend can be tested directly from this repository.
+## Upstream project
 
-From the repository root:
+This project is based on the excellent work of the Gramps community:
 
-```powershell
-docker compose down
-docker compose up --build -d
-```
+* [Gramps Web](https://github.com/gramps-project/gramps-web/blob/main/README.md)
+* [Gramps Project](https://gramps-project.org)
 
-This builds the frontend from local source code and runs it with the Gramps Web API image.
+Please support the original developers and contributors who make these projects possible.
 
-## Development Notes
+---
 
-The repository includes:
+## About the author
 
-- a local `docker-compose.yml` for building and testing the fork;
-- a multi-stage `Dockerfile` that builds the frontend before packaging it;
-- a centralized symbol definition so future UI components can stay consistent.
+I am a Bashkir genealogist and long-time Gramps user.
 
-## Language Policy
+This project grew naturally from years of working with multilingual family history, genealogy software, and Bashkir localization efforts. Bashkir language support was recently added to Gramps releases. [GitHub][1]
 
-The primary documentation language of this fork is English.
+I believe genealogy software should help people feel connected, not separated, by history.
 
-Planned additional languages for documentation and project notes:
+---
 
-- Russian
-- Bashkir
+## Contributions
 
-## Contributing
+Suggestions, discussions, translations, and respectful feedback are welcome.
 
-Contributions are welcome when they align with the purpose of this fork.
+---
 
-Please read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening issues or submitting changes.
+## License
 
-## Credits
+This repository follows the same license as the upstream Gramps Web project.
 
-This fork would not exist without the upstream Gramps Web project and the broader Gramps community. Full credit for the original application design and functionality belongs to its maintainers and contributors.
+[1]: https://github.com/gramps-project/gramps/releases "Releases · gramps-project/gramps"
