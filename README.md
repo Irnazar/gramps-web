@@ -22,6 +22,8 @@ This fork replaces some traditional religious-style symbols with neutral alterna
 
 The goal is not to remove history or identity, but to create an interface that feels respectful and comfortable for everyone.
 
+This fork is intentionally minimal. It focuses on a small, maintainable interface change rather than broad product divergence.
+
 ---
 
 ## Philosophy
@@ -65,6 +67,19 @@ Only certain interface symbols are visually adjusted.
 ## Screenshot
 
 ![Screenshot of the Gramps Web Neutral Symbols Fork](screenshot_farit.png)
+
+---
+
+## Installation
+
+For local testing from this fork:
+
+```powershell
+docker compose down
+docker compose up --build -d
+```
+
+This builds the frontend from the local repository and runs it with the Gramps Web API image.
 
 ---
 
