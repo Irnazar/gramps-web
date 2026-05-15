@@ -47,6 +47,12 @@ This repository remains based on the Gramps Web frontend and fully acknowledges 
 
 This fork is maintained as a fork-specific customization. It is not currently intended for merge into upstream.
 
+## Screenshot
+
+The screenshot below shows the fork in use with neutral birth and death markers in a real person and family context.
+
+![Screenshot of the Gramps Web Neutral Symbols Fork](screenshot_farit.png)
+
 ## Running This Fork Locally
 
 This fork includes a local Docker build setup so the modified frontend can be tested directly from this repository.
