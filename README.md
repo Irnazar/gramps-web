@@ -2,6 +2,8 @@
 
 A focused fork of the Gramps Web frontend with religion-neutral genealogical symbols.
 
+English | [Русский](./README.ru.md) | [Башҡортса](./README.ba.md)
+
 ## Overview
 
 This project is a small but thoughtful modification of the Gramps Web frontend interface.
