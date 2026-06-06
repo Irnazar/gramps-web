@@ -48,6 +48,37 @@ The updated symbols are used in:
 - `src/charts/TreeChart.js`
 - `src/charts/RelationshipChart.js`
 
+## Detailed File Changes
+
+Line numbers below refer to the fork after syncing with upstream `main` on 2026-06-06. They may shift later if upstream changes the surrounding code.
+
+| File | Current lines | Upstream behavior | Fork behavior |
+| --- | --- | --- | --- |
+| `src/icons.js` | 7-8 | No shared text constants for birth/death symbols. Individual views hardcoded `*`, `∗`, or `†`. | Adds shared constants: `birthSymbol = '/'` and `deathSymbol = '\\'`. |
+| `src/icons.js` | 10-25 | `asteriskIcon` used an asterisk-shaped SVG path, and `crossIcon` used a Christian cross-shaped SVG path. | `asteriskIcon` now draws a simple forward slash, and `crossIcon` now draws a simple backslash. Existing callers can keep using the same icon names while the visible symbols become neutral. |
+| `src/util.js` | 54-58 | Imported `asteriskIcon` and `crossIcon` only. | Also imports `birthSymbol` and `deathSymbol` so text renderers use the same shared symbols as cards and charts. |
+| `src/util.js` | 165-172 | Person snippets rendered the old asterisk and cross SVG icons through `asteriskIcon` and `crossIcon`. | The same render path now displays the neutral slash/backslash SVGs because those icon definitions were changed in `src/icons.js`. |
+| `src/util.js` | 528 | Person detail text hardcoded `∗` before the birth date. | Person detail text uses `${birthSymbol}` before the birth date. |
+| `src/components/GrampsjsFamily.js` | 1-2 | Did not import shared birth/death symbols. | Imports `birthSymbol` and `deathSymbol` from `src/icons.js`. |
+| `src/components/GrampsjsFamily.js` | 160-168 | Family parent rows hardcoded `∗` for birth and `†` for death. | Family parent rows render `${birthSymbol}` and `${deathSymbol}`. |
+| `src/components/personListUtils.js` | 1-4 | Did not import shared birth/death symbols. | Imports `birthSymbol` and `deathSymbol` from `src/icons.js`. |
+| `src/components/personListUtils.js` | 51-54 | Person list supporting text hardcoded `∗` for birth and `†` for death. | Person list supporting text renders `${birthSymbol}` and `${deathSymbol}`. |
+| `src/charts/TreeChart.js` | 1-6 | Tree chart did not import shared birth/death symbols. | Imports `birthSymbol` and `deathSymbol` from `src/icons.js`. |
+| `src/charts/TreeChart.js` | 279-304 | Tree chart labels hardcoded `*` before birth dates and `†` before death dates. | Tree chart labels render `${birthSymbol}` and `${deathSymbol}`. |
+| `src/charts/RelationshipChart.js` | 1-5 | Relationship chart did not import shared birth/death symbols. | Imports `birthSymbol` and `deathSymbol` from `src/icons.js`. |
+| `src/charts/RelationshipChart.js` | 468-488 | Relationship chart labels hardcoded `*` before birth dates and `†` before death dates. | Relationship chart labels render `${birthSymbol}` and `${deathSymbol}`. |
+
+## Practical Effect
+
+The visible UI change is intentionally small:
+
+| Context | Before | After |
+| --- | --- | --- |
+| Birth in lists and charts | `* 1900` or `∗ 1900` | `/ 1900` |
+| Death in lists and charts | `† 1980` | `\ 1980` |
+| Birth icon in person snippets | asterisk-style SVG | slash-style SVG |
+| Death icon in person snippets | cross-style SVG | backslash-style SVG |
+
 ## Implementation Rule
 
 The fork should consistently use:
