@@ -10,6 +10,7 @@ export class GrampsjsUpdateAvailable extends PwaUpdateAvailable {
     if ('serviceWorker' in navigator) {
       const reg = await navigator.serviceWorker.getRegistration()
       if (reg?.waiting) {
+        console.log('[GrampsjsUpdateAvailable] posting SKIP_WAITING')
         reg.waiting.postMessage({type: 'SKIP_WAITING'})
         return
       }

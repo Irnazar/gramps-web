@@ -1,5 +1,4 @@
-// eslint-disable-next-line camelcase
-import jwt_decode from 'jwt-decode'
+import {jwtDecode} from 'jwt-decode'
 
 import {fireEvent, normalizeRect} from './util.js'
 
@@ -31,7 +30,7 @@ export function getTreeId() {
   const accessToken = localStorage.getItem('access_token')
   let claims = {}
   try {
-    claims = jwt_decode(accessToken) || {}
+    claims = jwtDecode(accessToken) || {}
   } catch {
     claims = {}
   }
@@ -39,20 +38,24 @@ export function getTreeId() {
 }
 
 export function getTreeFromToken(token) {
-  const claims = jwt_decode(token) || {}
-  return claims.tree
+  try {
+    const claims = jwtDecode(token) || {}
+    return claims.tree
+  } catch {
+    return null
+  }
 }
 
 export function getPermissions() {
   const accessToken = localStorage.getItem('access_token')
   if (!accessToken || accessToken === '1') {
-    return null
+    return []
   }
   try {
-    const claims = jwt_decode(accessToken) || {}
-    return claims.permissions || {}
+    const claims = jwtDecode(accessToken) || {}
+    return Array.isArray(claims.permissions) ? claims.permissions : []
   } catch (e) {
-    return {}
+    return []
   }
 }
 
@@ -84,6 +87,36 @@ export function updateSettings(settings, tree = false) {
   const data = tree ? {[treeId]: finalSettings} : finalSettings
   localStorage.setItem(key, JSON.stringify(data))
   fireEvent(window, 'settings:changed')
+}
+
+export function getMapViewport() {
+  try {
+    const treeId = getTreeId() || 'unknown'
+    const {lat, lng, zoom} =
+      JSON.parse(localStorage.getItem('grampsjs_map_viewport'))?.[treeId] ?? {}
+    if (
+      typeof lat === 'number' &&
+      typeof lng === 'number' &&
+      typeof zoom === 'number'
+    ) {
+      return {lat, lng, zoom}
+    }
+  } catch (_) {
+    // ignore
+  }
+  return null
+}
+
+export function saveMapViewport(lat, lng, zoom) {
+  try {
+    const treeId = getTreeId() || 'unknown'
+    const existing =
+      JSON.parse(localStorage.getItem('grampsjs_map_viewport')) ?? {}
+    existing[treeId] = {lat, lng, zoom}
+    localStorage.setItem('grampsjs_map_viewport', JSON.stringify(existing))
+  } catch (_) {
+    // ignore
+  }
 }
 
 export const TREE_CONFIG_APP_TITLE = 'frontend.appTitle'
@@ -162,6 +195,90 @@ export function setChatHistory(data) {
   const objectData = {...objectDataAll, ...objectDataNew}
   const stringData = JSON.stringify(objectData)
   localStorage.setItem('chatMessages', stringData)
+}
+
+export function getChatTaskId() {
+  try {
+    const tree = getTreeId()
+    if (!tree) {
+      return null
+    }
+    const string = localStorage.getItem('chatTaskId')
+    const data = JSON.parse(string)
+    return data?.[tree] ?? null
+  } catch (e) {
+    return null
+  }
+}
+
+export function setChatTaskId(taskId, onlyIfEquals = undefined) {
+  const tree = getTreeId()
+  if (!tree) {
+    return
+  }
+  if (taskId === null) {
+    try {
+      const string = localStorage.getItem('chatTaskId')
+      const data = JSON.parse(string) ?? {}
+      if (onlyIfEquals !== undefined && data[tree] !== onlyIfEquals) {
+        return
+      }
+      delete data[tree]
+      localStorage.setItem('chatTaskId', JSON.stringify(data))
+    } catch (e) {
+      // ignore
+    }
+    return
+  }
+  try {
+    const string = localStorage.getItem('chatTaskId')
+    const data = {...(JSON.parse(string) ?? {}), [tree]: taskId}
+    localStorage.setItem('chatTaskId', JSON.stringify(data))
+  } catch (e) {
+    // ignore
+  }
+}
+
+export function getChatMessageHistoryRaw() {
+  try {
+    const tree = getTreeId()
+    if (!tree) {
+      return null
+    }
+    const string = localStorage.getItem('chatMessageHistoryRaw')
+    const data = JSON.parse(string)
+    return data?.[tree] ?? null
+  } catch (e) {
+    return null
+  }
+}
+
+export function setChatMessageHistoryRaw(blob, onlyIfEquals = undefined) {
+  const tree = getTreeId()
+  if (!tree) {
+    return
+  }
+  if (blob === null) {
+    try {
+      const string = localStorage.getItem('chatMessageHistoryRaw')
+      const data = JSON.parse(string) ?? {}
+      if (onlyIfEquals !== undefined && data[tree] !== onlyIfEquals) {
+        return
+      }
+      delete data[tree]
+      localStorage.setItem('chatMessageHistoryRaw', JSON.stringify(data))
+    } catch (e) {
+      // ignore
+    }
+    return
+  }
+  try {
+    const string = localStorage.getItem('chatMessageHistoryRaw')
+    const data = {...(JSON.parse(string) ?? {}), [tree]: blob}
+    localStorage.setItem('chatMessageHistoryRaw', JSON.stringify(data))
+  } catch (e) {
+    // ignore
+  }
 }
 
 // Editor draft management
@@ -534,6 +651,15 @@ export function getReportUrl(id, options) {
   return `${__APIHOST__}/api/reports/${id}/file?jwt=${jwt}&${queryParam}`
 }
 
+export function getTileUrl(handle, checksum = null) {
+  const jwt = localStorage.getItem('access_token')
+  const base = `${__APIHOST__}/api/media/${handle}/tile/{z}/{x}/{y}`
+  if (jwt === null) {
+    return checksum ? `${base}?checksum=${checksum}` : base
+  }
+  return `${base}?jwt=${jwt}${_checksumParam(checksum)}`
+}
+
 export function getMediaUrl(handle, download = false) {
   const jwt = localStorage.getItem('access_token')
   if (jwt === null) {
@@ -609,19 +735,24 @@ export function getThumbnailUrlCropped(
   return `${__APIHOST__}/api/media/${handle}/cropped/${x1}/${y1}/${x2}/${y2}/thumbnail/${size}?jwt=${jwt}&square=${square}${cs}`
 }
 
-export async function queryNominatim(q) {
-  const url = `https://nominatim.openstreetmap.org/search?q=${q}&format=jsonv2`
+export async function queryNominatim(
+  q,
+  {lang = 'en', limit = 10, signal} = {}
+) {
+  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+    q
+  )}&format=jsonv2&limit=${limit}&accept-language=${lang}`
   try {
     const resp = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: {Accept: 'application/json'},
+      signal,
     })
-    if (resp.status !== 200) {
-      throw new Error(`Error ${resp.statusText}`)
+    if (!resp.ok) {
+      return {error: resp.statusText, status: resp.status}
     }
     return {data: await resp.json()}
   } catch (error) {
+    if (error.name === 'AbortError') throw error
     return {error: error.message}
   }
 }
@@ -682,52 +813,6 @@ export function deleteBookmark(endpoint, handle) {
   }
 }
 
-export function getTaskIds() {
-  try {
-    const string = localStorage.getItem('tasks')
-    const data = JSON.parse(string) ?? {}
-    const tree = getTreeId()
-    if (tree) {
-      return data[tree]
-    }
-    return {}
-  } catch (e) {
-    return {}
-  }
-}
-
-export function getAllTaskIds() {
-  try {
-    const string = localStorage.getItem('tasks')
-    const data = JSON.parse(string) ?? {}
-    return data
-  } catch (e) {
-    return {}
-  }
-}
-
-export function addTaskId(taskName, taskId) {
-  const tree = getTreeId()
-  const data = getAllTaskIds()
-  if (!Object.hasOwn(data, tree)) {
-    data[tree] = {[taskName]: taskId}
-  } else {
-    data[tree][taskName] = taskId
-  }
-  const stringData = JSON.stringify(data)
-  localStorage.setItem('tasks', stringData)
-}
-
-export function deleteTaskId(taskName, taskId) {
-  const tree = getTreeId()
-  const data = getAllTaskIds()
-  if (data?.[tree]?.[taskName] === taskId) {
-    delete data[tree][taskName]
-    const stringData = JSON.stringify(data)
-    localStorage.setItem('tasks', stringData)
-  }
-}
-
 export class Auth {
   constructor() {
     this._refreshingTokens = null
@@ -769,7 +854,7 @@ export class Auth {
   get claims() {
     const token = this.accessToken
     if (!token) return {}
-    return jwt_decode(token)
+    return jwtDecode(token)
   }
 
   isTokenFresh() {
@@ -834,6 +919,7 @@ export class Auth {
       throw new Error('Access token missing in response')
     }
     localStorage.setItem('access_token', data.access_token)
+    fireEvent(window, 'token:refreshed')
     return {}
   }
 }
@@ -889,21 +975,23 @@ export async function apiPutPostDelete(
   method,
   endpoint,
   payload,
-  {isJson = true, dbChanged = true, requireFresh = false} = {}
+  {isJson = true, dbChanged = true, requireFresh = false, skipAuth = false} = {}
 ) {
   let resJson
   let status
   try {
     let headers = {}
-    try {
-      const accessToken = await auth.getValidAccessToken()
-      headers = {
-        ...headers,
-        Accept: 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      }
-      // eslint-disable-next-line no-empty
-    } catch {}
+    if (!skipAuth) {
+      try {
+        const accessToken = await auth.getValidAccessToken()
+        headers = {
+          ...headers,
+          Accept: 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        }
+        // eslint-disable-next-line no-empty
+      } catch {}
+    }
     if (isJson) {
       headers['Content-Type'] = 'application/json'
     }
@@ -959,6 +1047,9 @@ async function fetchStatus(auth, taskId) {
   return res.data
 }
 
+// Maximum consecutive fetch failures before polling is abandoned.
+const MAX_CONSECUTIVE_FAILURES = 5
+
 export async function updateTaskStatus(
   auth,
   taskId,
@@ -969,11 +1060,12 @@ export async function updateTaskStatus(
 ) {
   const doneStates = ['FAILURE', 'REVOKED', 'SUCCESS']
   let i = 0
+  let consecutiveFailures = 0
   let status = {}
   // Let callers stop polling when the owning UI task changes or disconnects.
   while (
     shouldContinue() &&
-    !doneStates.includes(status.state) &&
+    !doneStates.includes(status?.state) &&
     i < maxPolls
   ) {
     // eslint-disable-next-line no-await-in-loop
@@ -981,11 +1073,32 @@ export async function updateTaskStatus(
     if (!shouldContinue()) {
       break
     }
+    // Guard: fetchStatus returns undefined when the API call fails (network
+    // error, 404, etc.).  Count consecutive failures and abort after the limit
+    // so a persistent error doesn't loop forever.
+    if (!status) {
+      consecutiveFailures += 1
+      if (consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+        statusCallback({
+          state: 'FAILURE',
+          info: 'Polling failed: no response from server',
+        })
+        break
+      }
+      // eslint-disable-next-line no-await-in-loop
+      await new Promise(resolve => setTimeout(resolve, pollInterval))
+      i += 1
+      // Reset to empty object so the while condition stays valid on re-entry.
+      status = {}
+      // eslint-disable-next-line no-continue
+      continue
+    }
+    consecutiveFailures = 0
     statusCallback(status)
     if (!shouldContinue() || doneStates.includes(status.state)) {
       break
     }
-    // wait for 1s
+    // wait for pollInterval ms before next tick
     // eslint-disable-next-line no-await-in-loop
     await new Promise(resolve => setTimeout(resolve, pollInterval))
     i += 1

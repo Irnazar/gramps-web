@@ -541,6 +541,25 @@ function remasterChart(
     .filter(d => d.nodetype === 'person')
     .style('cursor', canEdit ? 'default' : 'pointer')
     .on('click', canEdit ? null : clicked)
+    .on('mouseenter', function (event, d) {
+      if (canEdit) return
+      if (window.matchMedia('(hover: none)').matches) return
+      const grampsId = d.profile?.gramps_id
+      if (!grampsId) return
+      window.dispatchEvent(
+        new CustomEvent('object:preview-show', {
+          detail: {
+            objectType: 'person',
+            grampsId,
+            anchorRect: this.getBoundingClientRect(),
+          },
+        })
+      )
+    })
+    .on('mouseleave', () => {
+      if (window.matchMedia('(hover: none)').matches) return
+      window.dispatchEvent(new CustomEvent('object:preview-hide'))
+    })
 
   if (canEdit) {
     appendAddPersonButton(

@@ -4,6 +4,7 @@ import {birthSymbol, deathSymbol} from '../icons.js'
 import '@material/mwc-icon'
 
 import {fireEvent} from '../util.js'
+import './GrampsjsObjectLink.js'
 import './GrampsjsFormEditFamily.js'
 import './GrampsjsFormNewPerson.js'
 import './GrampsjsFormPersonRef.js'
@@ -153,9 +154,11 @@ export class GrampsjsFamily extends GrampsjsObject {
           <dd class="${this.edit ? 'parent-row' : ''}">
             <div class="parent-info">
               ${hasProfile
-                ? html`<a href="/person/${profile.gramps_id}"
+                ? html`<grampsjs-object-link
+                      object-type="person"
+                      gramps-id="${profile.gramps_id}"
                       >${profile.name_given || '…'}
-                      ${profile.name_surname || '…'}</a
+                      ${profile.name_surname || '…'}</grampsjs-object-link
                     >
                     ${birthDate || deathDate
                       ? html`<span class="parent-dates">
