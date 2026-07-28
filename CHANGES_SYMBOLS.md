@@ -55,9 +55,9 @@ Line numbers below refer to the fork after syncing with upstream `main` on 2026-
 | File | Current lines | Upstream behavior | Fork behavior |
 | --- | --- | --- | --- |
 | `src/icons.js` | 7-8 | No shared text constants for birth/death symbols. Individual views hardcoded `*`, `∗`, or `†`. | Adds shared constants: `birthSymbol = '/'` and `deathSymbol = '\\'`. |
-| `src/icons.js` | 10-25 | `asteriskIcon` used an asterisk-shaped SVG path, and `crossIcon` used a Christian cross-shaped SVG path. | `asteriskIcon` now draws a simple forward slash, and `crossIcon` now draws a simple backslash. Existing callers can keep using the same icon names while the visible symbols become neutral. |
-| `src/util.js` | 54-58 | Imported `asteriskIcon` and `crossIcon` only. | Also imports `birthSymbol` and `deathSymbol` so text renderers use the same shared symbols as cards and charts. |
-| `src/util.js` | 165-172 | Person snippets rendered the old asterisk and cross SVG icons through `asteriskIcon` and `crossIcon`. | The same render path now displays the neutral slash/backslash SVGs because those icon definitions were changed in `src/icons.js`. |
+| `src/icons.js` | 7-25 | The upstream frontend uses an asterisk-shaped SVG path for birth and a Christian cross-shaped SVG path for death. | Exports `birthSymbol`, `deathSymbol`, `birthIcon`, and `deathIcon`; the visible icons are a forward slash and a backslash. |
+| `src/util.js` | 54-58 | Imports upstream icon definitions. | Imports the explicit `birthIcon` and `deathIcon` names plus the shared text symbols. |
+| `src/util.js` | 165-172 | Person snippets render the upstream birth and death icons. | Person snippets render the neutral icon definitions through their semantic names. |
 | `src/util.js` | 528 | Person detail text hardcoded `∗` before the birth date. | Person detail text uses `${birthSymbol}` before the birth date. |
 | `src/components/GrampsjsFamily.js` | 1-2 | Did not import shared birth/death symbols. | Imports `birthSymbol` and `deathSymbol` from `src/icons.js`. |
 | `src/components/GrampsjsFamily.js` | 160-168 | Family parent rows hardcoded `∗` for birth and `†` for death. | Family parent rows render `${birthSymbol}` and `${deathSymbol}`. |

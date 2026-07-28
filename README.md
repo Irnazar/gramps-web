@@ -85,6 +85,17 @@ This builds the frontend from the local repository and runs it with the Gramps W
 
 ---
 
+## Maintenance
+
+This fork is intentionally kept close to upstream. Before synchronizing with
+upstream Gramps Web, follow [UPSTREAM_SYNC.md](./UPSTREAM_SYNC.md) to preserve
+the neutral-symbol changes and run the required checks.
+
+The Docker base image is pinned in the `Dockerfile` for reproducible builds.
+Update it deliberately after checking compatibility with the frontend source.
+
+---
+
 ## Upstream project
 
 This project is based on the excellent work of the Gramps community:

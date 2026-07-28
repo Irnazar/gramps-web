@@ -1,7 +1,7 @@
 import {html} from 'lit'
 import '@material/mwc-icon'
 
-import {asteriskIcon, crossIcon} from './icons.js'
+import {birthIcon, deathIcon} from './icons.js'
 import {hex6ToCss, hex12ToCss} from './color.js'
 import {
   familyTitleFromProfile,
@@ -35,12 +35,12 @@ export function renderPerson(personProfile) {
     </span>
     ${personProfile?.birth?.date
       ? html` <span class="event"
-          ><i>${asteriskIcon}</i> ${personProfile.birth.date}</span
+          ><i>${birthIcon}</i> ${personProfile.birth.date}</span
         >`
       : ''}
     ${personProfile?.death?.date
       ? html` <span class="event"
-          ><i>${crossIcon}</i> ${personProfile.death.date}</span
+          ><i>${deathIcon}</i> ${personProfile.death.date}</span
         >`
       : ''}
   `

@@ -5,6 +5,6 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM dmstraub/gramps-webapi:latest
+FROM dmstraub/gramps-webapi:v3.4.1
 COPY --from=frontend-build /build/dist /app/static
 LABEL org.opencontainers.image.source="https://github.com/gramps-project/gramps-web"

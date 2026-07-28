@@ -7,7 +7,7 @@ import {html} from 'lit'
 export const birthSymbol = '/'
 export const deathSymbol = '\\'
 
-export const asteriskIcon = html`<svg
+export const birthIcon = html`<svg
   height="24"
   width="24"
   viewBox="0 0 24 24"
@@ -17,7 +17,7 @@ export const asteriskIcon = html`<svg
     d="M7.41,19L5.99,17.59L16.59,7L18,8.41L7.41,19Z"
   />
 </svg>`
-export const crossIcon = html`<svg height="24" width="24" viewBox="0 0 24 24">
+export const deathIcon = html`<svg height="24" width="24" viewBox="0 0 24 24">
   <path
     fill="var(--grampsjs-body-font-color-100)"
     d="M16.59,19L6,8.41L7.41,7L18,17.59L16.59,19Z"

@@ -51,9 +51,7 @@ import {
   mdiBookOpenVariant,
 } from '@mdi/js'
 import {
-  asteriskIcon,
   birthSymbol,
-  crossIcon,
   deathSymbol,
   renderIconSvg,
   ringsIconPath,
